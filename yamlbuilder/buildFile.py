@@ -1,5 +1,6 @@
 try:
     import os
+    import yaml
 except ImportError as e:
     print("Some modules could not be imported from stdlib('os')")
 
@@ -22,7 +23,7 @@ class GetInput:
         print("Config File Setup! What's the URL?")
         self.__url = input()
         print("Maximum number of hops?")
-        self.__hops = input()
+        self.__hops = int(input())
         print("Tags to scrape?")
         self.__tags = list(input().strip().split())
         print("Any attributes?")
@@ -30,25 +31,24 @@ class GetInput:
         print("Classes?")
         self.__classes = list(input().strip().split())
 
-        self.__yaml_dict = self.__buildDict(self.__url, self.__hops, self.__tags, self.__attrs, self.__classes)
-        return self.__yaml_dict
+        self._yaml_dict = self.__buildDict(self.__url, self.__hops, self.__tags, self.__attrs, self.__classes)
 
     def __getInputWeb(self):
         pass
 
     def __buildDict(self, *args):
-        dict = [{
+        dict = {
             'url': args[0],
             'hops': args[1],
             'tags': args[2],
             'attrs': args[3],
             'classes': args[4]
-        }]
+        }
         
         return dict
 
     def show_dict(self):
-        return self.__yaml_dict
+        return self._yaml_dict
 
 
 class BuildFile(GetInput):
@@ -57,8 +57,9 @@ class BuildFile(GetInput):
         self.__createFile()
 
     def __createFile(self):
-        pass
+        with open(r'yamlfiles/cobweb_config.yaml', 'w') as file:
+            yaml.dump(self._yaml_dict, file)
 
 if __name__ == "__main__":
-    x = GetInput(type="cli")
-    print(x.show_dict())
+    #x = BuildFile(type="cli") #this is a test!
+    pass
