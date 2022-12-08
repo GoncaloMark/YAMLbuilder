@@ -1,3 +1,6 @@
+from urllib.parse import urlparse
+
+
 try:
     import yaml
     from os import path
@@ -63,8 +66,9 @@ class BuildFile(GetInput):
         self.__createFile()
 
     def __createFile(self):
-        if path.exists(rf'yamlfiles/cobweb_config{self._url}.yaml') == False:
-            with open(rf'yamlfiles/cobweb_config{self._url}.yaml', 'w') as file:
+        identifier = urlparse(self._url).netloc[4:]
+        if path.exists(rf'yamlfiles/cobweb_{identifier}_config.yaml') == False:
+            with open(rf'yamlfiles/cobweb_{identifier}_config.yaml', 'w') as file:
                 yaml.dump(self._yaml_dict, file)
 
 if __name__ == "__main__":
